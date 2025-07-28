@@ -1,0 +1,24 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
+
+RUN apt-get update &&\
+    apt-get install -y software-properties-common perl wget curl git fish &&\
+    chsh -s $(which fish)
+
+# 为了能安装 clang
+RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
+# 安装 clang
+ARG CLANG_VERSION=18
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh ${CLANG_VERSION}
+ENV CC=clang-${CLANG_VERSION} CXX=clang++-${CLANG_VERSION}
+
+# 安装 bazel 相关的工具
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.17.0/bazelisk-linux-amd64 &&\
+    mv bazelisk-linux-amd64 /usr/local/bin/bazel &&\
+    chmod +x /usr/local/bin/bazel
+RUN wget https://github.com/bazelbuild/buildtools/releases/download/v6.3.3/buildifier-linux-amd64 &&\
+    mv buildifier-linux-amd64 /usr/local/bin/buildifier &&\
+    chmod +x /usr/local/bin/buildifier
+

@@ -1,0 +1,7 @@
+services:
+  develop:
+    image: waymax.cpp:develop
+    tty: true
+    volumes:
+      - "./:/root/waymax.cpp"
+    working_dir: "/root/waymax.cpp"
