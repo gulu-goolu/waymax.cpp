@@ -15,7 +15,7 @@ __global__ void box2d_overlap_kernel(uint32_t num_thread, const Box2d *boxes,
   const auto &box1 = boxes[tasks[idx].box1_id];
   const auto &box2 = boxes[tasks[idx].box2_id];
 
-  results[idx] = box2d_is_overlapped(box1, box2) || box2d_is_overlapped(box2, box1);
+  results[idx] = box2d_is_overlapped(box1, box2) && box2d_is_overlapped(box2, box1);
 }
 
 absl::Status box2d_overlap_test(cudaStream_t stream, absl::Span<const Box2d> boxes,
