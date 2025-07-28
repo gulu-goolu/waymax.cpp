@@ -49,45 +49,12 @@ TEST(box2d_test, rect_contains) {
   ASSERT_FALSE(is_rect_contains(1, 1, Float2{0.6, 0.6}));
 }
 
-inline bool box2d_is_overlapped2(const Box2d& a, const Box2d& b) {
-  Float2 borders[4] = {
-      {b.width * 0.5f, b.height * 0.5f},
-      {b.width * 0.5f, -b.height * 0.5f},
-      {-b.width * 0.5f, -b.height * 0.5f},
-      {-b.width * 0.5f, b.height * 0.5f},
-  };
-
-  // 先旋转
-  Matrix2d m = b.rotation.transpose() * a.rotation;
-  for (auto& p : borders) {
-    p = p * m;
-  }
-
-  // 再平移
-  const Float2 offset = {b.center.x - a.center.x, b.center.y - a.center.y};
-  for (auto& p : borders) {
-    p.x += offset.x;
-    p.y += offset.y;
-  }
-
-  for (auto p : borders) {
-    std::cerr << "rect contains, " << "p.x: " << p.x << ", p.y: " << p.y << ", width: " << a.width
-              << ", height: " << a.height << std::endl;
-    if (is_rect_contains(a.width, a.height, p)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 TEST(box2d_test, overlapped) {
-  ASSERT_FALSE(box2d_is_overlapped2(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{2, 0}, 1, 1)));
-  ASSERT_TRUE(box2d_is_overlapped2(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{0.5, 0}, 1, 1)));
+  ASSERT_FALSE(box2d_is_overlapped(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{2, 0}, 1, 1)));
+  ASSERT_TRUE(box2d_is_overlapped(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{0.5, 0}, 1, 1)));
 }
 
 TEST(box2d_test, gpu) {
-  return;
   ASSERT_FALSE(is_overlapped(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{2, 0}, 1, 1)));
   ASSERT_TRUE(is_overlapped(Box2d(Float2{0, 0}, 1, 1), Box2d(Float2{0.5, 0}, 1, 1)));
 }
