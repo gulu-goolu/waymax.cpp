@@ -1,0 +1,23 @@
+load("@rules_cuda//cuda:defs.bzl", "cuda_library")
+
+cc_library(
+    name = "geometry",
+    srcs = ["box2d.cc"],
+    hdrs = [
+        "box2d.h",
+        "matrix.h",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cuda_library(
+    name = "geometry_kernels",
+    srcs = ["box2d.cu"],
+    hdrs = ["box2d.cuh"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":geometry",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/types:span",
+    ],
+)

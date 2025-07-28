@@ -5,3 +5,11 @@ services:
     volumes:
       - "./:/root/waymax.cpp"
     working_dir: "/root/waymax.cpp"
+    privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

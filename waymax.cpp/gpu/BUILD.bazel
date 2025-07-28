@@ -1,0 +1,22 @@
+cc_library(
+    name = "gpu",
+    srcs = [
+        "allocator.cc",
+        "compute_manager.cc",
+        "transfer_manager.cc",
+    ],
+    hdrs = [
+        "allocator.h",
+        "compute_manager.h",
+        "transfer_manager.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//waymax.cpp/utils:macros",
+        "@abseil-cpp//absl/container:btree",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/log:absl_log",
+        "@abseil-cpp//absl/status:statusor",
+        "@local_cuda//:cuda_runtime_static",
+    ],
+)

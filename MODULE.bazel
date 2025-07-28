@@ -1,0 +1,42 @@
+"""
+"""
+
+module(
+    name = "waymax.cpp",
+)
+
+bazel_dep(name = "abseil-cpp", version = "20250512.1")
+
+# cuda
+bazel_dep(name = "rules_cuda", version = "0.2.5")
+cuda = use_extension("@rules_cuda//cuda:extensions.bzl", "toolchain")
+cuda.local_toolchain(
+    name = "local_cuda",
+    toolkit_path = "",
+)
+use_repo(cuda, "local_cuda")
+
+# --------------------------------- test ---------------------------------------
+bazel_dep(name = "googletest", version = "1.17.0")
+
+# python
+bazel_dep(name = "rules_python", version = "1.4.1", dev_dependency = True)
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
+python.toolchain(
+    ignore_root_user_error = True,
+    python_version = "3.11",
+)
+
+# Hedron's Compile Commands Extractor for Bazel
+# https://github.com/hedronvision/bazel-compile-commands-extractor
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    commit = "4f28899228fb3ad0126897876f147ca15026151e",
+    patch_strip = 1,
+    # Replace the commit hash (above) with the latest (https://github.com/hedronvision/bazel-compile-commands-extractor/commits/main).
+    # Even better, set up Renovate and let it do the work for you (see "Suggestion: Updates" in the README).
+    patches = ["//third_party:refresh_compile_commands.patch"],
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+)

@@ -1,0 +1,15 @@
+# Make Bazel print out all options from rc files.
+build --announce_rc
+
+# bazel module
+common --registry=https://bcr.bazel.build
+
+# module 这个特性会导致 grpc 无法依赖由 cmake 构建的 openssl。
+build --@rules_cuda//cuda:archs=sm_75,sm_89;
+
+# TODO: use clang instead of nvcc
+build --@rules_cuda//cuda:compiler=nvcc
+# static link against cuda runtime
+build --@rules_cuda//cuda:runtime=@local_cuda//:cuda_runtime_static
+
+build --copt="-Wno-unused-but-set-variable"

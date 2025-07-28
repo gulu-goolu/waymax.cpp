@@ -1,0 +1,10 @@
+cc_test(
+    name = "box2d_test",
+    srcs = ["box2d_test.cc"],
+    linkstatic = True,
+    deps = [
+        "//waymax.cpp/geometry:geometry_kernels",
+        "@abseil-cpp//absl/log:absl_check",
+        "@googletest//:gtest",
+    ],
+)
