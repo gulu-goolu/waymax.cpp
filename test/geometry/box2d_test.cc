@@ -30,10 +30,9 @@ bool is_overlapped(Box2d a, Box2d b) {
   void* result_gpu_addr = nullptr;
   ABSL_CHECK_EQ(cudaSuccess, cudaMalloc(&result_gpu_addr, 1));
 
-  auto st =
-      box2d_overlap_test(0, absl::MakeConstSpan(reinterpret_cast<const Box2d*>(boxes_gpu_addr), 2),
-                         absl::MakeSpan(reinterpret_cast<const OverlapTestTask*>(task_gpu_addr), 1),
-                         absl::MakeSpan(reinterpret_cast<bool*>(result_gpu_addr), 1));
+  auto st = box2d_overlap_test(0, reinterpret_cast<const Box2d*>(boxes_gpu_addr), 1,
+                               reinterpret_cast<const OverlapTestTask*>(task_gpu_addr),
+                               reinterpret_cast<bool*>(result_gpu_addr));
   ABSL_CHECK(st.ok()) << st.ToString();
 
   bool results[1] = {};
@@ -95,10 +94,9 @@ TEST(Box2d_test, bench) {
 
   auto gpu_start = std::chrono::steady_clock::now();
 
-  auto st = box2d_overlap_test(
-      0, absl::MakeSpan(reinterpret_cast<const Box2d*>(boxes_gpu_addr), 2),
-      absl::MakeConstSpan(reinterpret_cast<const OverlapTestTask*>(task_gpu_addr), repeats),
-      absl::MakeSpan(reinterpret_cast<bool*>(result_gpu_addr), repeats));
+  auto st = box2d_overlap_test(0, reinterpret_cast<const Box2d*>(boxes_gpu_addr), repeats,
+                               reinterpret_cast<const OverlapTestTask*>(task_gpu_addr),
+                               reinterpret_cast<bool*>(result_gpu_addr));
   ABSL_CHECK(st.ok());
   ABSL_CHECK_EQ(cudaSuccess, cudaStreamSynchronize(0));
 

@@ -18,17 +18,12 @@ __global__ void box2d_overlap_kernel(uint32_t num_thread, const Box2d *boxes,
   results[idx] = box2d_is_overlapped(box1, box2) && box2d_is_overlapped(box2, box1);
 }
 
-absl::Status box2d_overlap_test(cudaStream_t stream, absl::Span<const Box2d> boxes,
-                                absl::Span<const OverlapTestTask> tasks, absl::Span<bool> results) {
-  if (tasks.size() != results.size()) {
-    return absl::InvalidArgumentError("length of tasks and results mismatch");
-  }
-
+absl::Status box2d_overlap_test(cudaStream_t stream, const Box2d *boxes, uint32_t num_task,
+                                const OverlapTestTask *tasks, bool *results) {
   constexpr size_t block_size = 256;
-  const size_t num_grid = (tasks.size() + block_size - 1) / block_size;
+  const size_t num_grid = (num_task + block_size - 1) / block_size;
 
-  box2d_overlap_kernel<<<num_grid, block_size, 0, stream>>>(tasks.size(), boxes.data(),
-                                                            tasks.data(), results.data());
+  box2d_overlap_kernel<<<num_grid, block_size, 0, stream>>>(num_task, boxes, tasks, results);
 
   return absl::OkStatus();
 }

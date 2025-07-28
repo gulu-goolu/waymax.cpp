@@ -13,8 +13,8 @@ struct OverlapTestTask {
 };
 
 // 判断 boxes 数组是否有重叠的部分
-absl::Status box2d_overlap_test(cudaStream_t stream, absl::Span<const Box2d> boxes,
-                                absl::Span<const OverlapTestTask> tasks, absl::Span<bool> results);
+absl::Status box2d_overlap_test(cudaStream_t stream, const Box2d* boxes, uint32_t num_task,
+                                const OverlapTestTask* tasks, bool* results);
 
 // 判断 boxes 之间是否存在相互重叠
 //
