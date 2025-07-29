@@ -7,6 +7,7 @@ struct Float2 {
   float x = 0, y = 0;
 };
 
+// row major matrix
 struct Matrix2d {
   float m[2][2] = {};
 
@@ -42,8 +43,6 @@ struct Matrix2d {
     result.m[1][1] = std::cos(theta);
     return result;
   }
-
-  static Matrix2d rotate_inverse(const Matrix2d& m) { return m.transpose(); }
 
   static Matrix2d identity() {
     return Matrix2d{

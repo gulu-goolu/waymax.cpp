@@ -1,0 +1,10 @@
+cc_library(
+    name = "waymax.cpp",
+    srcs = ["visualization.cc"],
+    hdrs = ["visualization.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//waymax.cpp/geometry",
+        "@abseil-cpp//absl/types:span",
+    ],
+)

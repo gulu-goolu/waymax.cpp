@@ -2,7 +2,6 @@ load("@rules_cuda//cuda:defs.bzl", "cuda_library")
 
 cc_library(
     name = "geometry",
-    srcs = ["box2d.cc"],
     hdrs = [
         "box2d.h",
         "matrix.h",
