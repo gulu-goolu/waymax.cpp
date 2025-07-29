@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 #include "absl/types/span.h"
 #include "waymax.cpp/geometry/box2d.h"
@@ -14,12 +15,20 @@ struct ClipRect {
   float height;
 };
 
+struct Color {};
+
 class Bitmap {
  public:
- private:
-};
+  Bitmap(uint32_t width, uint32_t height)
+      : width_(width), height_(height), colors_(width * height, Color()) {}
 
-struct Color {};
+  void draw_line(Float2 p0, Float2 p1);
+
+ private:
+  const uint32_t width_;
+  const uint32_t height_;
+  std::vector<Color> colors_;
+};
 
 std::shared_ptr<Bitmap> vis_draw(ClipRect clip, absl::Span<const Box2d> boxes,
                                  absl::Span<const Color> boxes_color, uint32_t width,
