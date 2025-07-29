@@ -10,9 +10,16 @@
 
 namespace waymax_cpp {
 struct ClipRect {
-  Float2 offset;
-  float width;
-  float height;
+  float left, right;
+  float top, boottom;
+
+  constexpr bool contains(Float2 p) const {
+    if (p.x > left && p.x < right && p.y > boottom && p.y < top) {
+      return true;
+    }
+
+    return false;
+  }
 };
 
 struct Color {};
@@ -22,7 +29,9 @@ class Bitmap {
   Bitmap(uint32_t width, uint32_t height)
       : width_(width), height_(height), colors_(width * height, Color()) {}
 
-  void draw_line(Float2 p0, Float2 p1);
+  void draw_line(Float2 p0, Float2 p1, Color color);
+
+  void draw_rect(absl::Span<const Float2> borders, Color color);
 
  private:
   const uint32_t width_;
@@ -31,6 +40,5 @@ class Bitmap {
 };
 
 std::shared_ptr<Bitmap> vis_draw(ClipRect clip, absl::Span<const Box2d> boxes,
-                                 absl::Span<const Color> boxes_color, uint32_t width,
-                                 uint32_t height);
+                                 absl::Span<const Color> colors, uint32_t width, uint32_t height);
 }  // namespace waymax_cpp
