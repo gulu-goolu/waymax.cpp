@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "absl/types/span.h"
@@ -22,16 +23,25 @@ struct ClipRect {
   }
 };
 
-struct Color {};
+struct Color {
+  uint8_t r = 0, g = 0, b = 0, a = 0;
+
+  static Color kColorBlack;
+};
 
 class Bitmap {
  public:
   Bitmap(uint32_t width, uint32_t height)
       : width_(width), height_(height), colors_(width * height, Color()) {}
 
+  void clear(Color color);
+
   void draw_line(Float2 p0, Float2 p1, Color color);
 
   void draw_rect(absl::Span<const Float2> borders, Color color);
+
+  // "png", "jpeg"
+  std::string as_blob(const std::string& format);
 
  private:
   const uint32_t width_;

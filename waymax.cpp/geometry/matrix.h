@@ -11,6 +11,14 @@ constexpr Float2 operator*(const Float2& lhs, const Float2& rhs) {
   return Float2{lhs.x * rhs.x, lhs.y * rhs.y};
 }
 
+constexpr Float2 operator+(const Float2& lhs, const Float2& rhs) {
+  return Float2{lhs.x + rhs.x, lhs.y + rhs.y};
+}
+
+constexpr Float2 operator-(const Float2& lhs, const Float2& rhs) {
+  return Float2{lhs.x - rhs.x, lhs.y - rhs.y};
+}
+
 // row major matrix
 struct Matrix2d {
   float m[2][2] = {};

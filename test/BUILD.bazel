@@ -14,3 +14,13 @@ cc_test(
     srcs = ["iterator_test.cc"],
     linkstatic = True,
 )
+
+cc_test(
+    name = "vis_test",
+    srcs = ["vis_test.cc"],
+    linkstatic = True,
+    deps = [
+        "//waymax.cpp",
+        "@googletest//:gtest",
+    ],
+)

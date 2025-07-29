@@ -6,6 +6,7 @@ module(
 )
 
 bazel_dep(name = "abseil-cpp", version = "20250512.1")
+bazel_dep(name = "stb", version = "0.0.0-20241109-5c20573")
 
 # cuda
 bazel_dep(name = "rules_cuda", version = "0.2.5")

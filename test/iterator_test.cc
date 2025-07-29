@@ -35,18 +35,14 @@ struct MyIterator {
       while (ptr->left) {
         ptr = ptr->left;
       }
-      return;
-    }
-
-    if (ptr->parent && ptr->parent->left == ptr) {
+    } else if (ptr->parent && ptr->parent->left == ptr) {
       ptr = ptr->parent;
-      return;
-    }
-
-    while (ptr->parent && ptr->parent->right == ptr) {
+    } else {
+      while (ptr->parent && ptr->parent->right == ptr) {
+        ptr = ptr->parent;
+      }
       ptr = ptr->parent;
     }
-    ptr = ptr->parent;
   }
 
   void prev() {
@@ -55,18 +51,14 @@ struct MyIterator {
       while (ptr->right) {
         ptr = ptr->right;
       }
-      return;
-    }
-
-    if (ptr->parent && ptr->parent->right == ptr) {
+    } else if (ptr->parent && ptr->parent->right == ptr) {
       ptr = ptr->parent;
-      return;
-    }
-
-    while (ptr->parent && ptr->parent->left == ptr) {
+    } else {
+      while (ptr->parent && ptr->parent->left == ptr) {
+        ptr = ptr->parent;
+      }
       ptr = ptr->parent;
     }
-    ptr = ptr->parent;
   }
 
   Node* ptr;
