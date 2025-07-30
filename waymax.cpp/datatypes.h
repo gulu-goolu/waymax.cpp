@@ -13,5 +13,11 @@ class Action {
 
 class TrajectoryUpdate {
  public:
+  float x;
+  float y;
+  float yaw;
+  float vel_x;
+  float vel_y;
+  float valid;
 };
 }  // namespace waymax_cpp
