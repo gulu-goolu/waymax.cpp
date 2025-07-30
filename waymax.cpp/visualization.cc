@@ -1,6 +1,7 @@
 #include "waymax.cpp/visualization.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -18,8 +19,8 @@ Color Color::kColorBlack = {.r = 0, .g = 0, .b = 0, .a = 255};
 // --------------------------------- Bitmap ---------------------------------------
 
 void Bitmap::clear(Color color) {
-  for (int y = 0; y < height_; ++y) {
-    for (int x = 0; x < width_; ++x) {
+  for (uint32_t y = 0; y < height_; ++y) {
+    for (uint32_t x = 0; x < width_; ++x) {
       colors_[y * width_ + x] = color;
     }
   }

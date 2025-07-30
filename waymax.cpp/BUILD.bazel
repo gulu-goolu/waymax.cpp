@@ -1,7 +1,15 @@
 cc_library(
     name = "waymax.cpp",
-    srcs = ["visualization.cc"],
-    hdrs = ["visualization.h"],
+    srcs = [
+        "datatypes.cc",
+        "dynamics.cc",
+        "visualization.cc",
+    ],
+    hdrs = [
+        "datatypes.h",
+        "dynamics.h",
+        "visualization.h",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//waymax.cpp/geometry",
