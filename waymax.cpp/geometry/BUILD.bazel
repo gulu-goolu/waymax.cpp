@@ -9,6 +9,7 @@ cc_library(
         "matrix.h",
     ],
     visibility = ["//visibility:public"],
+    deps = ["@abseil-cpp//absl/types:span"],
 )
 
 cuda_library(

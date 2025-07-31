@@ -19,6 +19,10 @@ struct AABB2d {
   }
 
   constexpr Float2 center() const { return Float2{(left + right) * 0.5f, (top + bottom) * 0.5f}; }
+
+  constexpr float width() { return right - left; }
+
+  constexpr float height() { return top - bottom; }
 };
 
 struct Box2d {
