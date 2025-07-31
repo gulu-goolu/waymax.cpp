@@ -80,8 +80,8 @@ constexpr bool is_rect_contains(float width, float height, Float2 p) {
   return false;
 }
 
-constexpr bool is_rect_overlapped(float width, float height, float left, float right, float top,
-                                  float bottom) {
+constexpr bool is_rect_seperated(float width, float height, float left, float right, float top,
+                                 float bottom) {
   float max_x = width * 0.5f;
   float max_y = height * 0.5f;
   float min_x = -max_x;
@@ -91,25 +91,25 @@ constexpr bool is_rect_overlapped(float width, float height, float left, float r
 
   bool is_separate_vertically = bottom > max_y || top < min_y;
 
-  return !(is_separate_horizontally || is_separate_vertically);
+  return (is_separate_horizontally || is_separate_vertically);
 }
 
-constexpr inline bool box2d_is_overlapped(const Box2d &a, const Box2d &b) {
+constexpr inline bool box2d_is_seperated(const Box2d &aa, const Box2d &box) {
   Float2 borders[4] = {
-      {b.width * 0.5f, b.height * 0.5f},
-      {b.width * 0.5f, -b.height * 0.5f},
-      {-b.width * 0.5f, -b.height * 0.5f},
-      {-b.width * 0.5f, b.height * 0.5f},
+      {box.width * 0.5f, box.height * 0.5f},
+      {box.width * 0.5f, -box.height * 0.5f},
+      {-box.width * 0.5f, -box.height * 0.5f},
+      {-box.width * 0.5f, box.height * 0.5f},
   };
 
   // 先旋转
-  Matrix2d m = b.rotation.transpose() * a.rotation;
+  Matrix2d m = box.rotation.transpose() * aa.rotation;
   for (auto &p : borders) {
     p = p * m;
   }
 
   // 再平移
-  Float2 offset = {b.center.x - a.center.x, b.center.y - a.center.y};
+  Float2 offset = {box.center.x - aa.center.x, box.center.y - aa.center.y};
   for (auto &p : borders) {
     p.x += offset.x;
     p.y += offset.y;
@@ -123,7 +123,11 @@ constexpr inline bool box2d_is_overlapped(const Box2d &a, const Box2d &b) {
       std::min(std::min(borders[0].y, borders[1].y), std::min(borders[2].y, borders[3].y));
   float top = std::max(std::max(borders[0].y, borders[1].y), std::max(borders[2].y, borders[3].y));
 
-  return is_rect_overlapped(a.width, a.height, left, right, top, bottom);
+  return is_rect_seperated(aa.width, aa.height, left, right, top, bottom);
+}
+
+constexpr bool box2d_is_overlapped(const Box2d &box1, const Box2d &box2) {
+  return !(box2d_is_seperated(box1, box2) || box2d_is_seperated(box2, box1));
 }
 
 }  // namespace waymax_cpp

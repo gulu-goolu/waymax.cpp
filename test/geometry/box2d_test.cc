@@ -43,6 +43,8 @@ bool is_overlapped(Box2d a, Box2d b) {
   ABSL_CHECK_EQ(cudaSuccess, cudaFree(task_gpu_addr));
   ABSL_CHECK_EQ(cudaSuccess, cudaFree(result_gpu_addr));
 
+  std::cout << "result: " << results[0] << std::endl;
+
   return results[0];
 }
 

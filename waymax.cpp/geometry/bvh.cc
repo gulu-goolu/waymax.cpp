@@ -44,7 +44,7 @@ std::shared_ptr<Bvh2d> Bvh2d::build(const Box2d *boxes, absl::Span<uint32_t> ids
     result->left_ = build(boxes, ids.subspan(0, pos));
     result->right_ = build(boxes, ids.subspan(pos));
 
-    return nullptr;
+    return result;
   }
 }
 }  // namespace waymax_cpp
