@@ -2,8 +2,10 @@ load("@rules_cuda//cuda:defs.bzl", "cuda_library")
 
 cc_library(
     name = "geometry",
+    srcs = ["bvh.cc"],
     hdrs = [
         "box2d.h",
+        "bvh.h",
         "matrix.h",
     ],
     visibility = ["//visibility:public"],

@@ -1,8 +1,25 @@
 #pragma once
 
+#include <algorithm>
+
 #include "waymax.cpp/geometry/matrix.h"
 
 namespace waymax_cpp {
+
+struct AABB2d {
+  float left, right, bottom, top;
+
+  static constexpr AABB2d merge(const AABB2d &aabb1, const AABB2d &aabb2) {
+    return AABB2d{
+        std::min(aabb1.left, aabb2.left),
+        std::max(aabb1.right, aabb2.right),
+        std::min(aabb1.bottom, aabb2.bottom),
+        std::max(aabb1.top, aabb2.top),
+    };
+  }
+
+  constexpr Float2 center() const { return Float2{(left + right) * 0.5f, (top + bottom) * 0.5f}; }
+};
 
 struct Box2d {
   Float2 center;
@@ -12,6 +29,38 @@ struct Box2d {
 
   Box2d(Float2 _center, float _width, float _height)
       : center(_center), width(_width), height(_height), rotation(Matrix2d::identity()) {}
+
+  constexpr AABB2d aabb() const {
+    const float x = width * 0.5f, y = height * 0.5f;
+    Float2 borders[4] = {
+        {x, y},
+        {x, -y},
+        {-x, y},
+        {-x, -y},
+    };
+
+    // rotate
+    for (auto &border : borders) {
+      border = border * rotation;
+    }
+
+    // translate
+    for (auto &border : borders) {
+      border = border + center;
+    }
+
+    const float left =
+        std::min(std::min(borders[0].x, borders[1].x), std::min(borders[2].x, borders[3].x));
+    const float right =
+        std::max(std::max(borders[0].x, borders[1].x), std::max(borders[2].x, borders[3].x));
+
+    const float bottom =
+        std::min(std::min(borders[0].y, borders[1].y), std::min(borders[2].y, borders[3].y));
+    const float top =
+        std::max(std::max(borders[0].y, borders[1].y), std::max(borders[2].y, borders[3].y));
+
+    return AABB2d{left, right, bottom, top};
+  }
 };
 
 constexpr bool is_rect_contains(float width, float height, Float2 p) {
