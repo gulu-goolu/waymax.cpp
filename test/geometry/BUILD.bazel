@@ -8,3 +8,15 @@ cc_test(
         "@googletest//:gtest",
     ],
 )
+
+cc_test(
+    name = "bvh_test",
+    srcs = ["bvh_test.cc"],
+    linkstatic = True,
+    deps = [
+        "//waymax.cpp/geometry:geometry_kernels",
+        "@abseil-cpp//absl/log:absl_check",
+        "@abseil-cpp//absl/random",
+        "@googletest//:gtest",
+    ],
+)
